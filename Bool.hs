@@ -1,10 +1,10 @@
 module Bool where
 
-import Prelude hiding (Bool, True, False, not)
 import Nat
+import Prelude hiding (not)
 
-data Bool = False | True
-    deriving ( Eq, Show )
+-- data Bool = False | True
+--     deriving ( Eq, Show )
 
 not :: Bool -> Bool
 not True = False

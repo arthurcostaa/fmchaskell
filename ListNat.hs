@@ -26,6 +26,7 @@ import Prelude hiding
     , tail
     , init
     , last
+    , replicate
     )
 
 --data ListNat = Nil | Cons Nat ListNat
@@ -55,7 +56,8 @@ product (x : xs) = x * product xs
 
 reverse :: ListNat -> ListNat
 reverse [] = []
-reverse (x : xs) = (reverse xs) ++ [x]
+--reverse (x : xs) = (reverse xs) ++ [x]
+reverse (x : xs) = append x (reverse xs)
 
 allEven :: ListNat -> Bool
 allEven [] = True
@@ -119,6 +121,10 @@ pwMul :: ListNat -> ListNat -> ListNat
 pwMul (x : xs) (y : ys) = (x * y) : (pwMul xs ys)
 pwMul _  _ = []
 
+pwExp :: ListNat -> ListNat -> ListNat
+pwExp (x : xs) (y : ys) = (x ^ y) : (pwExp xs ys)
+pwExp _ _ = []
+
 filterEven :: ListNat -> ListNat
 filterEven [] = []
 filterEven (x : xs) = if ev x then x : filterEven xs else filterEven xs
@@ -153,3 +159,19 @@ last :: ListNat -> Nat
 last [] = error "Empty List has no last"
 last [n] = n
 last (x : xs) = last xs
+
+countdown :: Nat -> ListNat
+countdown O = [O]
+countdown (S n) = (S n) : countdown n
+
+stretch :: Nat -> ListNat -> ListNat
+stretch n (x : xs) = replicate n x ++ stretch n xs
+stretch _ [] = []
+
+append :: Nat -> ListNat -> ListNat
+append n (x : xs) = x : append n xs
+append n [] = [n]
+
+replicate :: Nat -> Nat -> ListNat
+replicate O _ = []
+replicate (S n) m = m : replicate n m

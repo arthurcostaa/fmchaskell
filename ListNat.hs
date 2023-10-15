@@ -22,6 +22,8 @@ import Prelude hiding
     , enumFromTo
     , take
     , drop
+    , minimum
+    , maximum
     , head
     , tail
     , init
@@ -40,7 +42,10 @@ length (x : xs) = S(length xs)
 
 elem :: Nat -> ListNat -> Bool
 elem _ [] = False
-elem n (x : xs) = if n == x then True else elem n xs
+-- elem n (x : xs) = if n == x then True else elem n xs
+elem n (x : xs)
+    | n == x    = True
+    | otherwise = elem n xs
 
 sum :: ListNat -> Nat
 sum [] = O
@@ -52,11 +57,11 @@ product (x : xs) = x * product xs
 
 (++) :: ListNat -> ListNat -> ListNat
 [] ++ xs = xs
-(n : ns) ++ ms = n : (ns ++ ms)
+(x : xs) ++ ys = x : (xs ++ ys)
 
 reverse :: ListNat -> ListNat
 reverse [] = []
---reverse (x : xs) = (reverse xs) ++ [x]
+-- reverse (x : xs) = (reverse xs) ++ [x]
 reverse (x : xs) = append x (reverse xs)
 
 allEven :: ListNat -> Bool
@@ -97,7 +102,7 @@ expNat n (x : xs) = (n ^ x) : (expNat n xs)
 
 enumFromTo :: Nat -> Nat -> ListNat
 enumFromTo n m
-    | n > m = []
+    | n > m     = []
     | otherwise = n : enumFromTo (S n) m
 
 enumTo :: Nat -> ListNat
@@ -127,11 +132,43 @@ pwExp _ _ = []
 
 filterEven :: ListNat -> ListNat
 filterEven [] = []
-filterEven (x : xs) = if ev x then x : filterEven xs else filterEven xs
+-- filterEven (x : xs) = if ev x then x : filterEven xs else filterEven xs
+filterEven (x : xs)
+    | ev x      = x : filterEven xs
+    | otherwise = filterEven xs
 
 filterOdd :: ListNat -> ListNat
 filterOdd [] = []
-filterOdd (x : xs) = if od x then x : filterOdd xs else filterOdd xs
+-- filterOdd (x : xs) = if od x then x : filterOdd xs else filterOdd xs
+filterOdd (x : xs)
+    | od x      = x : filterOdd xs
+    | otherwise = filterOdd xs
+
+elemIndices :: Nat -> ListNat -> ListNat
+elemIndices _ [] = []
+elemIndices n (x : xs)
+    | n == x    = O : (addNat (S O) (elemIndices n xs))
+    | otherwise = addNat (S O) (elemIndices n xs)
+
+isSorted :: ListNat -> Bool
+isSorted (n : (m : ms)) = n < m && isSorted (m : ms)
+isSorted _ = True
+
+minimum :: ListNat -> Nat
+minimum [] = error "Empty List has no minimum"
+minimum [x] = x
+minimum (x : (y : ys)) = if (x < y) && (x < (minimum (y : ys))) then x else minimum (y : ys)
+
+maximum :: ListNat -> Nat
+maximum [] = error "Empty List has no maximum"
+maximum [x] = x
+maximum (x : (y : ys)) = if (x > y) && (x > (maximum (y : ys))) then x else maximum (y : ys)
+
+isPrefixOf :: ListNat -> ListNat -> Bool
+isPrefixOf [] [] = True
+isPrefixOf [] (x : xs) = True
+isPrefixOf (x : xs) [] = False
+isPrefixOf (x : xs) (y : ys) = if (x == y) && (isPrefixOf xs ys) then True else False
 
 mix :: ListNat -> ListNat -> ListNat
 mix (x : xs) (y : ys) = x : (y : (mix xs ys))

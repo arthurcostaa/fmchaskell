@@ -20,6 +20,8 @@ import Prelude hiding
     , product
     , reverse
     , enumFromTo
+    , take
+    , drop
     , head
     , tail
     , init
@@ -98,6 +100,41 @@ enumFromTo n m
 
 enumTo :: Nat -> ListNat
 enumTo n = enumFromTo O n
+
+take :: Nat -> ListNat -> ListNat
+take _ [] = []
+take O (_ : _) = []
+take (S n) (x : xs) = x : take n xs
+
+drop :: Nat -> ListNat -> ListNat
+drop _ [] = []
+drop O (x : xs) = (x : xs)
+drop (S n) (x : xs) = drop n xs
+
+pwAdd :: ListNat -> ListNat -> ListNat
+pwAdd (x : xs) (y : ys) = (x + y) : (pwAdd xs ys)
+pwAdd _ _ = []
+
+pwMul :: ListNat -> ListNat -> ListNat
+pwMul (x : xs) (y : ys) = (x * y) : (pwMul xs ys)
+pwMul _  _ = []
+
+filterEven :: ListNat -> ListNat
+filterEven [] = []
+filterEven (x : xs) = if ev x then x : filterEven xs else filterEven xs
+
+filterOdd :: ListNat -> ListNat
+filterOdd [] = []
+filterOdd (x : xs) = if od x then x : filterOdd xs else filterOdd xs
+
+mix :: ListNat -> ListNat -> ListNat
+mix (x : xs) (y : ys) = x : (y : (mix xs ys))
+mix _ _ = []
+
+interspace :: Nat -> ListNat -> ListNat
+interspace _ [x] = [x]
+interspace n (x : xs) = x : (n : interspace n xs)
+interspace _ [] = []
 
 head :: ListNat -> Nat
 head [] = error "Empty List has no head"

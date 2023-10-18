@@ -1,24 +1,24 @@
 module Nat where
 
 import Prelude hiding
-    ( (+)
-    , (-)
-    , (*)
-    , (^)
-    , (<)
-    , pred
-    , min
-    , max
-    , div
-    )
+  ( div,
+    max,
+    min,
+    pred,
+    (*),
+    (+),
+    (-),
+    (<),
+    (^),
+  )
 
 data Nat = O | S Nat
-    deriving ( Eq , Show )
+  deriving (Eq, Show)
 
 -- Addition
 (+) :: Nat -> Nat -> Nat
 n + O = n
-n + S m = S(n + m)
+n + S m = S (n + m)
 
 -- "Monus"
 (-) :: Nat -> Nat -> Nat
@@ -39,7 +39,7 @@ n ^ S m = n * (n ^ m)
 -- Double
 double :: Nat -> Nat
 double O = O
-double (S n)  = S (S (double n))
+double (S n) = S (S (double n))
 
 -- Fibonacci
 fib :: Nat -> Nat
@@ -56,7 +56,7 @@ luc (S (S n)) = luc n + luc (S n)
 -- Factorial
 fact :: Nat -> Nat
 fact O = S O
-fact (S n) = (S n) * (fact n)
+fact (S n) = S n * fact n
 
 -- Predecessor
 pred :: Nat -> Nat

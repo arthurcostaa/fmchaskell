@@ -74,3 +74,8 @@ max :: Nat -> Nat -> Nat
 max n O = n
 max O n = n
 max (S n) (S m) = S (max n m)
+
+comb :: Nat -> Nat -> Nat
+comb n O = S O
+comb O r = O
+comb n r = comb (pred n) (pred r) + comb (pred n) r

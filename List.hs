@@ -1,27 +1,32 @@
 module List where
 
 import Bool ()
-import ListNat hiding (pwAdd, pwExp, pwMul, replicate)
-import Nat (Nat (..))
+import ListNat hiding (pwAdd, pwExp, pwMul, replicate, stretch, (++))
+import Nat (Nat (..), (*), (+))
 import Prelude hiding
   ( all,
     any,
+    dropWhile,
     filter,
     map,
     replicate,
     takeWhile,
     zip,
+    (*),
     (+),
+    (++),
   )
 
 replicate :: Nat -> a -> [a]
 replicate O _ = []
 replicate (S n) x = x : replicate n x
 
+-- map (Nat.+ (S O)) [O, (S O), (S (S O))]
 map :: (a -> b) -> [a] -> [b]
 map f [] = []
 map f (x : xs) = f x : map f xs
 
+-- filter Bool.ev [O, (S O), (S (S O))]
 filter :: (a -> Bool) -> [a] -> [a]
 filter f [] = []
 filter f (x : xs)
@@ -52,6 +57,28 @@ takeWhile f [] = []
 takeWhile f (x : xs)
   | f x = x : takeWhile f xs
   | otherwise = []
+
+dropWhile :: (a -> Bool) -> [a] -> [a]
+dropWhile f [] = []
+dropWhile f (x : xs)
+  | f x = dropWhile f xs
+  | otherwise = x : dropWhile f xs
+
+fsum :: ListNat -> Nat
+fsum [] = O
+fsum (x : xs) = fold (+) O (x : xs)
+
+fproduct :: ListNat -> Nat
+fproduct [] = S O
+fproduct (x : xs) = fold (*) (S O) (x : xs)
+
+(++) :: [a] -> [a] -> [a]
+[] ++ xs = xs
+(x : xs) ++ ys = x : (xs ++ ys)
+
+stretch :: Nat -> [a] -> [a]
+stretch n (x : xs) = replicate n x ++ stretch n xs
+stretch _ [] = []
 
 zip :: [a] -> [b] -> [(a, b)]
 zip = pointwise (,)

@@ -51,7 +51,7 @@ sum [] = O
 sum (x : xs) = x + sum xs
 
 product :: ListNat -> Nat
-product [] = (S O)
+product [] = S O
 product (x : xs) = x * product xs
 
 (++) :: ListNat -> ListNat -> ListNat
